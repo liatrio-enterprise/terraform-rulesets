@@ -1,3 +1,4 @@
 repos:
   - "status-check-test"
   - "cuddly-umbrella"
+  - "terraform-rulesets"

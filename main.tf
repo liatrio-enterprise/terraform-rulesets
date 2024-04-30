@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     github = {
-      source  = "integrations/github"
+      source = "integrations/github"
       version = "~> 6.0"
     }
   }
@@ -57,13 +57,44 @@ resource "github_organization_ruleset" "liatrio-enterprise-rulesets" {
 
   rules {
     pull_request {
-      require_last_push_approval = true
-      required_approving_review_count = 1
+      require_last_push_approval        = true
+      required_approving_review_count   = 1
       required_review_thread_resolution = true
     }
     required_status_checks {
       required_check {
         context = "CodeQL"
+      }
+    }
+  }
+}
+
+resource "github_organization_ruleset" "liatrio-enterprise-rulesets-for-iac" {
+  name        = "liatrio-enterprise-rulesets-for-iac"
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+    repository_name {
+      include = ["~ALL"]
+      exclude = []
+    }
+  }
+
+  rules {
+    pull_request {
+      require_last_push_approval = true
+      required_approving_review_count = 1
+      required_review_thread_resolution = true
+    }
+    required_workflows {
+      required_workflow {
+        repository_id = 793815922
+        path = ".github/workflows/checkov.yml"
       }
     }
   }
