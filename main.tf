@@ -40,10 +40,14 @@ resource "github_organization_ruleset" "liatrio-enterprise-rulesets" {
       include = ["~DEFAULT_BRANCH"]
       exclude = []
     }
-    repository_name {
-      include = ["~ALL"]
-      exclude = local.exclude_repos.repos
+    repository_property {
+      include = ["~environment:prod"]
+      exclude = []
     }
+    # repository_name {
+    #   include = ["~ALL"]
+    #   exclude = local.exclude_repos.repos
+    # }
   }
 
   dynamic "bypass_actors" {
@@ -56,6 +60,7 @@ resource "github_organization_ruleset" "liatrio-enterprise-rulesets" {
   }
 
   rules {
+    // Do not touch
     pull_request {
       require_last_push_approval        = true
       required_approving_review_count   = 1
@@ -66,6 +71,7 @@ resource "github_organization_ruleset" "liatrio-enterprise-rulesets" {
         context = "CodeQL"
       }
     }
+    // Define your extra rules here
   }
 }
 
