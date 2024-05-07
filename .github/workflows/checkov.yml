@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   checkov-job:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     name: checkov-action
     steps:
       - name: Checkout repo
